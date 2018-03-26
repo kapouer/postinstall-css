@@ -19,5 +19,13 @@
   "bugs": {
     "url": "https://github.com/kapouer/postinstall-css/issues"
   },
-  "homepage": "https://github.com/kapouer/postinstall-css#readme"
+  "homepage": "https://github.com/kapouer/postinstall-css#readme",
+  "dependencies": {
+    "autoprefixer": "^8.2.0",
+    "csswring": "^6.0.3",
+    "postcss": "^6.0.21",
+    "postcss-import": "^11.1.0",
+    "postcss-reporter": "^5.0.0",
+    "postcss-url": "^7.3.1"
+  }
 }
