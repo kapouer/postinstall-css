@@ -12,30 +12,43 @@ fs = {
 	writeFile: pify(fs.writeFile)
 };
 
-module.exports = function(input, output, options) {
-	var plugins = [
-		postcssImport({
-			plugins: [postcssUrl({url: postcssRebase})]
-		}),
-		postcssUrl({url: postcssRebase}),
-		autoprefixer(),
-		reporter(),
-		csswring({
-			preserveHacks: true
-		})
-	];
-	return fs.readFile(input).then(function(data) {
-		return postcss(plugins).process(data, {
-			from: input,
+var processor = postcss([
+	postcssImport({
+		plugins: [postcssUrl({url: postcssRebase})]
+	}),
+	postcssUrl({url: postcssRebase}),
+	autoprefixer(),
+	reporter(),
+	csswring({
+		preserveHacks: true
+	})
+]);
+
+module.exports = function(inputs, output, options) {
+	return Promise.all(inputs.map(function(input) {
+		return fs.readFile(input);
+	})).then(function(files) {
+		var root = postcss.root();
+		files.forEach(function(file, i) {
+			var cur = postcss.parse(file, {
+				from: inputs[i],
+				map: {
+					inline: false
+				}
+			});
+			root.append(cur);
+		});
+		return processor.process(root, {
+			from: output,
 			to: output,
 			map: {
 				inline: false
 			}
-		}).then(function(result) {
-			var list = [fs.writeFile(output, result.css)];
-			if (result.map) list.push(fs.writeFile(`${output}.map`, result.map));
-			return Promise.all(list);
 		});
+	}).then(function(result) {
+		var list = [fs.writeFile(output, result.css)];
+		if (result.map) list.push(fs.writeFile(`${output}.map`, result.map));
+		return Promise.all(list);
 	});
 };
 
