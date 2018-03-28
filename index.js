@@ -52,14 +52,9 @@ module.exports = function(inputs, output, options) {
 	});
 };
 
-function postcssRebase(oldUrl, decl, from, dirname, to, options, result) {
-	var urlObj = URL.parse(oldUrl);
-	if (urlObj.protocol) return oldUrl;
-	var newPath = oldUrl;
-	if (dirname !== from) {
-		newPath = Path.relative(from, Path.join(dirname, newPath));
-	}
-	newPath = Path.resolve(from, newPath);
-	newPath = Path.relative(to, newPath);
-	return '/' + newPath;
+function postcssRebase(asset, dir, opts, ast, warn, result) {
+	var path = asset.pathname;
+	var to = result.opts.to;
+	if (!path) return;
+	return asset.relativePath;
 }
