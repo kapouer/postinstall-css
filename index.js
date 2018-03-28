@@ -20,7 +20,8 @@ var processor = postcss([
 	autoprefixer(),
 	reporter(),
 	csswring({
-		preserveHacks: true
+		preserveHacks: true,
+		removeAllComments: true
 	})
 ]);
 
@@ -58,3 +59,4 @@ function postcssRebase(asset, dir, opts, ast, warn, result) {
 	if (!path) return;
 	return asset.relativePath;
 }
+
