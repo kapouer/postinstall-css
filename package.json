@@ -12,6 +12,7 @@
   },
   "keywords": [
     "postinstall",
+    "postcss-runner",
     "css"
   ],
   "author": "Jérémy Lal <kapouer@melix.org>",
