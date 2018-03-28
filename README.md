@@ -16,3 +16,8 @@ Usage
 
 The plugin can be called directly, or through `postinstall`.
 
+Caveats
+-------
+
+Support for source maps is not yet available.
+
