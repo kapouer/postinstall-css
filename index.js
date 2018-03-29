@@ -1,18 +1,16 @@
-var postcss = require('postcss');
-var postcssUrl = require("postcss-url");
-var postcssImport = require('postcss-import');
-var autoprefixer = require('autoprefixer');
-var csswring = require('csswring');
-var reporter = require('postcss-reporter');
+const postcss = require('postcss');
+const postcssUrl = require("postcss-url");
+const postcssImport = require('postcss-import');
+const autoprefixer = require('autoprefixer');
+const csswring = require('csswring');
+const reporter = require('postcss-reporter');
 
-var pify = require('util').promisify;
-var fs = require('fs');
-fs = {
-	readFile: pify(fs.readFile),
-	writeFile: pify(fs.writeFile)
-};
+const pify = require('util').promisify;
+const fs = require('fs');
+const readFile = pify(fs.readFile);
+const writeFile = pify(fs.writeFile);
 
-var processor = postcss([
+const processor = postcss([
 	postcssImport({
 		plugins: [postcssUrl({url: postcssRebase})]
 	}),
@@ -27,7 +25,7 @@ var processor = postcss([
 
 module.exports = function(inputs, output, options) {
 	return Promise.all(inputs.map(function(input) {
-		return fs.readFile(input);
+		return readFile(input);
 	})).then(function(files) {
 		var root = postcss.root();
 		files.forEach(function(file, i) {
@@ -47,8 +45,8 @@ module.exports = function(inputs, output, options) {
 			}
 		});
 	}).then(function(result) {
-		var list = [fs.writeFile(output, result.css)];
-		if (result.map) list.push(fs.writeFile(`${output}.map`, result.map));
+		var list = [writeFile(output, result.css)];
+		if (result.map) list.push(writeFile(`${output}.map`, result.map));
 		return Promise.all(list);
 	});
 };
