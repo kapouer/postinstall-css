@@ -24,7 +24,7 @@ const processor = postcss([
 ]);
 
 module.exports = function(inputs, output, options) {
-	if (inputs.length == 0) return writeFile(output, "");
+	if (inputs.length == 0) return Promise.resolve();
 	return Promise.all(inputs.map(function(input) {
 		return readFile(input);
 	})).then(function(files) {
