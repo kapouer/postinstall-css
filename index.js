@@ -10,25 +10,12 @@ const fs = require('fs');
 const readFile = pify(fs.readFile);
 const writeFile = pify(fs.writeFile);
 
-const defaultPlugins = [
-	postcssImport({
-		plugins: [postcssUrl({url: postcssRebase})]
-	}),
-	postcssUrl({url: postcssRebase}),
-	autoprefixer(),
-	reporter(),
-	csswring({
-		preserveHacks: true,
-		removeAllComments: true
-	})
-];
-
 module.exports = function(inputs, output, options) {
 	if (inputs.length == 0) return Promise.resolve();
 	return Promise.all(inputs.map(function(input) {
 		return readFile(input);
 	})).then(function(files) {
-		var root = postcss.root();
+		const root = postcss.root();
 		files.forEach(function(file, i) {
 			var cur = postcss.parse(file, {
 				from: inputs[i],
@@ -38,9 +25,25 @@ module.exports = function(inputs, output, options) {
 			});
 			root.append(cur);
 		});
-		var plugins = defaultPlugins;
-		if (options.minify === false) {
-			plugins = plugins.slice(0, -1);
+
+		const plugins = [
+			postcssImport({
+				plugins: [postcssUrl({url: postcssRebase})]
+			}),
+			postcssUrl({
+				url: postcssRebase
+			}),
+			autoprefixer({
+				browsers: options.browsers || [ "last 10 versions" ]
+			}),
+			reporter()
+		];
+
+		if (options.minify !== false) {
+			plugins.push(csswring({
+				preserveHacks: true,
+				removeAllComments: true
+			}));
 		}
 		return postcss(plugins).process(root, {
 			from: output,
@@ -50,16 +53,14 @@ module.exports = function(inputs, output, options) {
 			}
 		});
 	}).then(function(result) {
-		var list = [writeFile(output, result.css)];
+		const list = [writeFile(output, result.css)];
 		if (result.map) list.push(writeFile(`${output}.map`, result.map));
 		return Promise.all(list);
 	});
 };
 
-function postcssRebase(asset, dir, opts, ast, warn, result) {
-	var path = asset.pathname;
-	var to = result.opts.to;
-	if (!path) return;
+function postcssRebase(asset) {
+	if (!asset.pathname) return;
 	return asset.relativePath;
 }
 

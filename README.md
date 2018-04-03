@@ -15,6 +15,27 @@ Usage
 -----
 
 The plugin can be called directly, or through `postinstall`.
+Directly:
+```
+require('postinstall-css')(inputs, output, options).then(function() {
+	// done
+});
+```
+
+Options
+=======
+
+browsers
+--------
+
+Pass `browsers: ['Last 2 versions']` to override the default setting of
+last 10 versions.
+
+minify
+------
+
+Pass `minify: false` to disable minification.
+
 
 Caveats
 -------
