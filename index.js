@@ -10,7 +10,7 @@ const fs = require('fs');
 const readFile = pify(fs.readFile);
 const writeFile = pify(fs.writeFile);
 
-const processor = postcss([
+const defaultPlugins = [
 	postcssImport({
 		plugins: [postcssUrl({url: postcssRebase})]
 	}),
@@ -21,7 +21,7 @@ const processor = postcss([
 		preserveHacks: true,
 		removeAllComments: true
 	})
-]);
+];
 
 module.exports = function(inputs, output, options) {
 	if (inputs.length == 0) return Promise.resolve();
@@ -38,7 +38,11 @@ module.exports = function(inputs, output, options) {
 			});
 			root.append(cur);
 		});
-		return processor.process(root, {
+		var plugins = defaultPlugins;
+		if (options.minify === false) {
+			plugins = plugins.slice(0, -1);
+		}
+		return postcss(plugins).process(root, {
 			from: output,
 			to: output,
 			map: {
