@@ -34,7 +34,7 @@ module.exports = function(inputs, output, options) {
 				url: postcssRebase
 			}),
 			autoprefixer({
-				browsers: options.browsers || [ "last 10 versions" ]
+				browsers: options.browsers || [ ">=0.15%, not ie 8" ]
 			}),
 			reporter()
 		];
