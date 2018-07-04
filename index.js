@@ -1,6 +1,7 @@
 const postcss = require('postcss');
 const postcssUrl = require("postcss-url");
 const postcssImport = require('postcss-import');
+const postcssFlexBugs = require('postcss-flexbugs-fixes');
 const autoprefixer = require('autoprefixer');
 const csswring = require('csswring');
 const reporter = require('postcss-reporter');
@@ -33,6 +34,7 @@ module.exports = function(inputs, output, options) {
 			postcssUrl({
 				url: postcssRebase
 			}),
+			postcss-flexbugs-fixes,
 			autoprefixer({
 				browsers: options.browsers || [ ">=0.15%, not ie 8" ]
 			}),
