@@ -1,6 +1,6 @@
 {
   "name": "postinstall-css",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "postinstall command to compile css using postcss+csswring+import+url",
   "main": "index.js",
   "scripts": {
