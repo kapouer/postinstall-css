@@ -37,8 +37,7 @@ module.exports = function(inputs, output, options) {
 			postcss-flexbugs-fixes,
 			autoprefixer({
 				browsers: options.browsers || [ ">=0.15%, not ie 8" ]
-			}),
-			reporter()
+			})
 		];
 
 		if (options.minify !== false) {
@@ -47,6 +46,7 @@ module.exports = function(inputs, output, options) {
 				removeAllComments: true
 			}));
 		}
+		plugins.push(reporter);
 		return postcss(plugins).process(root, {
 			from: output,
 			to: output,
