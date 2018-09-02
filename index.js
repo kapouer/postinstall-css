@@ -34,7 +34,7 @@ module.exports = function(inputs, output, options) {
 			postcssUrl({
 				url: postcssRebase
 			}),
-			postcss-flexbugs-fixes,
+			postcssFlexBugs,
 			autoprefixer({
 				browsers: options.browsers || [ ">=0.15%, not ie 8" ]
 			})
