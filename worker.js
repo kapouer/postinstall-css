@@ -3,7 +3,7 @@ const postcssUrl = require("postcss-url");
 const postcssImport = require('postcss-import');
 const postcssFlexBugs = require('postcss-flexbugs-fixes');
 const autoprefixer = require('autoprefixer');
-const csswring = require('csswring');
+const cssnano = require('cssnano');
 const reporter = require('postcss-reporter');
 
 const pify = require('util').promisify;
@@ -42,9 +42,12 @@ module.exports = function(inputs, output, options) {
 		];
 
 		if (options.minify !== false) {
-			plugins.push(csswring({
-				preserveHacks: true,
-				removeAllComments: true
+			plugins.push(cssnano({
+				preset: ['default', {
+					discardComments: {
+						removeAll: true
+					}
+				}]
 			}));
 		}
 		plugins.push(reporter);
