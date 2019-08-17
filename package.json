@@ -1,6 +1,6 @@
 {
   "name": "postinstall-css",
-  "version": "0.4.1-2",
+  "version": "0.5.0",
   "description": "postinstall command to compile CSS to something useful",
   "main": "index.js",
   "scripts": {
@@ -22,13 +22,13 @@
   },
   "homepage": "https://github.com/kapouer/postinstall-css#readme",
   "dependencies": {
-    "autoprefixer": "^9.5.0",
+    "autoprefixer": "^9.6.1",
     "cssnano": "^4.1.10",
-    "postcss": "^7.0.14",
+    "postcss": "^7.0.17",
     "postcss-flexbugs-fixes": "^4.1.0",
     "postcss-import": "^12.0.1",
     "postcss-reporter": "^6.0.1",
-    "postcss-url": "^8.0.0",
+    "postcss-url": "^9.0.0",
     "worker-nodes": "^1.6.1"
   },
   "peerDependencies": {
