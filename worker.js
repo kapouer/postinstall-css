@@ -6,60 +6,48 @@ const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const reporter = require('postcss-reporter');
 
-const pify = require('util').promisify;
-const fs = {
-	readFile: pify(require('fs').readFile),
-	writeFile: pify(require('fs').writeFile)
-};
+const defaultPlugins = [
+	postcssImport({
+		plugins: [postcssUrl({url: postcssRebase})]
+	}),
+	postcssUrl({
+		url: postcssRebase
+	}),
+	postcssFlexBugs,
+	autoprefixer()
+];
 
-module.exports = function(inputs, output, options) {
-	if (inputs.length == 0) return Promise.resolve();
-	return Promise.all(inputs.map(function(input) {
-		return fs.readFile(input);
-	})).then(function(files) {
-		const root = postcss.root();
-		files.forEach(function(file, i) {
-			var cur = postcss.parse(file, {
-				from: inputs[i],
-				map: {
-					inline: false
-				}
-			});
-			root.append(cur);
-		});
-
-		const plugins = [
-			postcssImport({
-				plugins: [postcssUrl({url: postcssRebase})]
-			}),
-			postcssUrl({
-				url: postcssRebase
-			}),
-			postcssFlexBugs,
-			autoprefixer()
-		];
-
-		if (options.minify !== false) {
-			plugins.push(cssnano({
-				preset: ['default', {
-					discardComments: {
-						removeAll: true
-					}
-				}]
-			}));
+const nanoPlugin = cssnano({
+	preset: ['default', {
+		discardComments: {
+			removeAll: true
 		}
-		plugins.push(reporter);
-		return postcss(plugins).process(root, {
-			from: output,
-			to: output,
-			map: {
-				inline: false
-			}
-		});
+	}]
+});
+
+module.exports = function(input, data, output, opts) {
+	const plugins = defaultPlugins.slice();
+	const root = postcss.parse(data, {
+		from: input,
+		map: {
+			inline: false
+		}
+	});
+
+	if (opts.minify !== false) {
+		plugins.push(nanoPlugin);
+	}
+	plugins.push(reporter);
+	return postcss(plugins).process(root, {
+		from: output,
+		to: output,
+		map: {
+			inline: false
+		}
 	}).then(function(result) {
-		const list = [fs.writeFile(output, result.css)];
-		if (result.map) list.push(fs.writeFile(`${output}.map`, result.map));
-		return Promise.all(list);
+		return {
+			data: result.css
+		};
 	});
 };
 

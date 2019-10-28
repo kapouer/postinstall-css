@@ -1,13 +1,5 @@
-const WorkerNodes = require('worker-nodes');
-const Path = require('path');
+const Cache = require('postinstall-cache');
 
-const worker = new WorkerNodes(Path.join(__dirname, 'worker.js'), {
-	taskTimeout: 60 * 1000,
-	minWorkers: 1,
-	maxWorkers: 1
+module.exports = Cache.worker({
+	dirname: __dirname
 });
-
-module.exports = function(inputs, output, options) {
-	return worker.call(inputs, output, options);
-};
-
