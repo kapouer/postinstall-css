@@ -53,6 +53,6 @@ module.exports = function(input, data, output, opts) {
 
 function postcssRebase(asset) {
 	if (!asset.pathname) return;
-	return asset.relativePath;
+	return asset.relativePath + (asset.search || '');
 }
 
