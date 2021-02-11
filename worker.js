@@ -2,6 +2,7 @@ const postcss = require('postcss');
 const postcssUrl = require("postcss-url");
 const postcssImport = require('postcss-import');
 const postcssFlexBugs = require('postcss-flexbugs-fixes');
+const postcssAspectRatio = require('postcss-aspect-ratio-property');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const reporter = require('postcss-reporter');
@@ -14,6 +15,7 @@ const defaultPlugins = [
 		url: postcssRebase
 	}),
 	postcssFlexBugs,
+	postcssAspectRatio,
 	autoprefixer()
 ];
 
