@@ -1,5 +1,10 @@
 const Cache = require('postinstall-cache');
 
-module.exports = Cache.worker({
+const cacheWorker = Cache.worker({
 	dirname: __dirname
 });
+
+module.exports = function (inputs, output, options) {
+	return cacheWorker(inputs, output, options);
+};
+

@@ -31,9 +31,7 @@ module.exports = function(input, data, output, opts) {
 	const plugins = defaultPlugins.slice();
 	const root = postcss.parse(data, {
 		from: input,
-		map: {
-			inline: false
-		}
+		map: false
 	});
 
 	if (opts.minify !== false) {
@@ -43,9 +41,7 @@ module.exports = function(input, data, output, opts) {
 	return postcss(plugins).process(root, {
 		from: output,
 		to: output,
-		map: {
-			inline: false
-		}
+		map: false
 	}).then(function(result) {
 		return {
 			data: result.css
