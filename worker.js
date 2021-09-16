@@ -44,7 +44,7 @@ module.exports = function(input, data, output, opts) {
 		map: false
 	}).then(function(result) {
 		return {
-			data: result.css
+			data: result.css.replace(/\/\*#\ssourceMappingURL=.+\s\*\//gm, "")
 		};
 	});
 };
