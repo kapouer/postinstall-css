@@ -22,19 +22,18 @@
   },
   "homepage": "https://github.com/kapouer/postinstall-css#readme",
   "dependencies": {
-    "autoprefixer": "^10.3.4",
-    "cssnano": "^5.0.8",
-    "postcss": "^8.3.6",
-    "postcss-aspect-ratio-property": "^1.0.0",
+    "autoprefixer": "^10.4.7",
+    "cssnano": "^5.1.10",
+    "postcss": "^8.4.14",
     "postcss-flexbugs-fixes": "^5.0.2",
-    "postcss-import": "^14.0.2",
-    "postcss-reporter": "^7.0.2",
+    "postcss-import": "^14.1.0",
+    "postcss-reporter": "^7.0.5",
     "postcss-url": "^10.1.3",
-    "postinstall": "^0.7.3",
+    "postinstall": "^0.7.4",
     "postinstall-cache": "^0.7.0"
   },
   "devDependencies": {
-    "@kapouer/eslint-config": "^1.5.1"
+    "@kapouer/eslint-config": "^1.6.2"
   },
   "eslintConfig": {
     "extends": "@kapouer/eslint-config"
