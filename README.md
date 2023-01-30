@@ -4,6 +4,7 @@ postinstall-css
 This is a [postinstall](http://github.com/kapouer/postintall) command plugin.
 
 It runs `postcss` with these plugins (in that order):
+
 - postcss-import (for inlining imports)
 - postcss-url (for rebasing)
 - postcss-flexbugs-fixes
@@ -11,35 +12,25 @@ It runs `postcss` with these plugins (in that order):
 - reporter
 - cssnano (for minification)
 
-
 Usage
 -----
 
 The plugin can be called directly, or through `postinstall`.
 Directly:
-```
+
+```js
 require('postinstall-css')(inputs, output, options).then(function() {
-	// done
+ // done
 });
 ```
 
 Options
-=======
+-------
 
-browsers
---------
-
-Pass `browsers: ['Last 2 versions']` to override the default setting of
-last 10 versions.
-
-minify
-------
-
-Pass `minify: false` to disable minification.
-
+- browsers: a string, environment for Browserslist
+- minify: pass `minify: false` to disable minification.
 
 Caveats
 -------
 
 Support for source maps is not yet available.
-
