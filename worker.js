@@ -9,7 +9,12 @@ const reporter = require("postcss-reporter");
 module.exports = function (input, data, output, opts) {
 	if (opts.browsers) process.env.BROWSERSLIST = opts.browsers;
 
-	const basePlugins = [
+	const root = postcss.parse(data, {
+		from: input,
+		map: false
+	});
+
+	const plugins = [
 		postcssImport({
 			plugins: [postcssUrl({ url: postcssRebase })]
 		}),
@@ -19,12 +24,6 @@ module.exports = function (input, data, output, opts) {
 		postcssFlexBugs,
 		autoprefixer()
 	];
-	const root = postcss.parse(data, {
-		from: input,
-		map: false
-	});
-
-	const plugins = [];
 
 	if (opts.minify !== false) {
 		plugins.push(cssnano({
@@ -34,8 +33,6 @@ module.exports = function (input, data, output, opts) {
 				}
 			}]
 		}));
-	} else {
-		plugins.push(...basePlugins);
 	}
 	plugins.push(reporter);
 	return postcss(plugins).process(root, {
